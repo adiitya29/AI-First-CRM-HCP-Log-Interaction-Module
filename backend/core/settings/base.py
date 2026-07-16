@@ -73,8 +73,17 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 # ─── Database (Supabase / PostgreSQL) ─────────────────────────────────────────
 DATABASES = {
-    "default": env.db("DATABASE_URL"),
+    "default": env.db(
+        "DATABASE_URL",
+        default="sqlite:///db.sqlite3",
+    ),
 }
+
+# Supabase requires SSL in production – apply when using postgres
+if DATABASES["default"]["ENGINE"] == "django.db.backends.postgresql":
+    DATABASES["default"].setdefault("OPTIONS", {})
+    DATABASES["default"]["OPTIONS"]["sslmode"] = "require"
+    DATABASES["default"]["CONN_MAX_AGE"] = 60  # keep connections alive 60 s
 
 # ─── Password Validation ──────────────────────────────────────────────────────
 AUTH_PASSWORD_VALIDATORS = [
