@@ -14,6 +14,7 @@ from .serializers import (
     InteractionSerializer,
     InteractionListSerializer,
 )
+from .ai.agent import parse_interaction_text
 
 
 # ── Health Check ──────────────────────────────────────────────────────────────
@@ -98,14 +99,13 @@ class InteractionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = InteractionSerializer
 
 
-# ── AI Chat placeholder ───────────────────────────────────────────────────────
+# ── AI Chat (LangGraph + Groq) ───────────────────────────────────────────────
 
 class ChatView(APIView):
     """
     POST /api/v1/hcp/chat/
     Accepts a natural-language message from the field rep and returns an
-    AI-parsed interaction draft.
-    LangGraph + Groq agent will be wired in a later module.
+    AI-parsed interaction draft via the LangGraph agent.
     """
 
     def post(self, request):
@@ -116,12 +116,19 @@ class ChatView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Placeholder response – real LangGraph agent in next module
+        # Call the LangGraph agent to extract data
+        parsed_data = parse_interaction_text(message)
+        
+        if "error" in parsed_data:
+            return Response(
+                {"error": parsed_data["error"]},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
         return Response(
             {
-                "status": "stub",
-                "message": "AI chat agent not yet connected. Coming in the next module.",
-                "echo": message,
+                "status": "success",
+                "parsed_data": parsed_data,
             },
             status=status.HTTP_200_OK,
         )

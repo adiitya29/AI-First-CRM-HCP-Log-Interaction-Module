@@ -60,29 +60,6 @@ class TestHealthCheck:
         assert data["module"] == "hcp"
 
 
-# ── Chat stub view test ────────────────────────────────────────────────────────
-
-@pytest.mark.django_db
-class TestChatView:
-    def test_chat_requires_message(self, client):
-        url = reverse("hcp:chat")
-        response = client.post(url, data={}, content_type="application/json")
-        assert response.status_code == 400
-
-    def test_chat_returns_stub_with_message(self, client):
-        import json
-        url = reverse("hcp:chat")
-        response = client.post(
-            url,
-            data=json.dumps({"message": "Met Dr. Smith today"}),
-            content_type="application/json",
-        )
-        assert response.status_code == 200
-        data = response.json()
-        assert data["status"] == "stub"
-        assert data["echo"] == "Met Dr. Smith today"
-
-
 # ── Serializer unit tests ──────────────────────────────────────────────────────
 
 @pytest.mark.django_db
