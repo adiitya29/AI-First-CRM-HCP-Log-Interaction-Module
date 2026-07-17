@@ -8,8 +8,9 @@
 
 This project provides a **Log Interaction Screen** that lets field reps log interactions with HCPs via:
 - **Structured Form** – traditional field-by-field data entry
-- **Conversational Chat** – AI-powered natural language interface (LangGraph + Groq)
+- **Conversational Chat** – AI-powered natural language interface using LangGraph & Groq (`gemma2-9b-it`)
 
+Currently, the **Backend** is fully functional with robust CRUD operations, Pytest test suites, database configurations, and a working AI LangGraph agent to extract structured fields from natural language notes.
 ---
 
 ## 🛠️ Tech Stack
@@ -83,12 +84,28 @@ Copy `backend/.env.example` to `backend/.env` and fill in:
 
 ---
 
-## 📋 Development Workflow
+## 📋 Development Workflow (Progress)
 
-1. Work module-by-module (backend first, then frontend)
-2. Test after every major change
-3. Push to GitHub after each passing milestone
-4. Move to the next module
+### ✅ Completed So Far (Backend)
+- **Module 1: Scaffold & Serialization**
+  - Django models for `HealthcareProfessional` and `Interaction`.
+  - DRF Serializers, API views, and URL routing.
+- **Module 2: Database & Migrations**
+  - PostgreSQL via Supabase connection.
+  - Safe local testing using an in-memory SQLite override via `conftest.py`.
+  - Custom `verify_db` management command.
+- **Module 3: Full API CRUD Integration**
+  - Advanced filtering and querying.
+  - 39 integration tests verifying every endpoint, creation rule, and partial update.
+- **Module 4: LangGraph AI Agent**
+  - Integration with Groq API (`gemma2-9b-it`).
+  - Structured data extraction using Pydantic schemas (converting natural language logs to structured JSON).
+  - Fully mocked unit tests to test the API without burning Groq credits.
+  - Total of **40/40 passing Pytest tests**.
+
+### 🚧 Up Next (Frontend)
+- Setting up the Redux Thunks to consume these Django endpoints.
+- Building the UI (Forms and AI Chatbox) using React and the predefined Inter typography and CSS Design Tokens.
 
 ---
 
