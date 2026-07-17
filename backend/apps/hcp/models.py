@@ -15,7 +15,7 @@ class HealthcareProfessional(models.Model):
     last_name = models.CharField(max_length=100)
     specialty = models.CharField(max_length=200, blank=True)
     email = models.EmailField(unique=True, blank=True, null=True)
-    phone = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(max_length=50, blank=True)
     institution = models.CharField(max_length=300, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
