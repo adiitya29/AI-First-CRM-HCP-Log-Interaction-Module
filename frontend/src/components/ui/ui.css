@@ -1,0 +1,110 @@
+.ui-card {
+  background: hsla(var(--color-surface) / 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--color-border));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.ui-card-header {
+  padding: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid hsl(var(--color-border) / 0.5);
+}
+
+.ui-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: hsl(var(--color-primary));
+}
+
+.ui-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Form Inputs */
+.ui-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: hsl(var(--color-text));
+}
+
+.ui-input, .ui-textarea, .ui-select {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border-radius: var(--radius-md);
+  border: 1px solid hsl(var(--color-border));
+  background: hsl(var(--color-surface));
+  color: hsl(var(--color-text));
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+  outline: none;
+  font-family: inherit;
+}
+
+.ui-input:focus, .ui-textarea:focus, .ui-select:focus {
+  border-color: hsl(var(--color-primary));
+  box-shadow: 0 0 0 2px hsl(var(--color-primary-light));
+}
+
+.ui-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Buttons */
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  outline: none;
+  border: 1px solid transparent;
+  gap: 0.5rem;
+}
+
+.ui-button:focus-visible {
+  box-shadow: 0 0 0 2px hsl(var(--color-background)), 0 0 0 4px hsl(var(--color-primary));
+}
+
+.ui-button-primary {
+  background-color: hsl(var(--color-primary));
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.ui-button-primary:hover {
+  background-color: hsl(var(--color-primary-hover));
+}
+
+.ui-button-secondary {
+  background-color: hsl(var(--color-background));
+  color: hsl(var(--color-text));
+  border-color: hsl(var(--color-border));
+}
+
+.ui-button-secondary:hover {
+  background-color: hsl(var(--color-border));
+}
+
+.ui-button-outline {
+  background-color: transparent;
+  color: hsl(var(--color-primary));
+  border-color: hsl(var(--color-primary));
+}
+
+.ui-button-outline:hover {
+  background-color: hsl(var(--color-primary-light));
+}
