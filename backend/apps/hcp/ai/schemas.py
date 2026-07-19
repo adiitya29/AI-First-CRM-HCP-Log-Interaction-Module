@@ -31,6 +31,11 @@ class InteractionExtraction(BaseModel):
         description="The raw notes or a polished version of what the representative entered."
     )
     
+    attendees: List[str] = Field(
+        default_factory=list,
+        description="A list of attendee names (other than the HCP) present at the interaction, e.g., ['Mr. Aditya', 'Dr. Patel']. Extract if mentioned."
+    )
+    
     products_discussed: List[str] = Field(
         default_factory=list,
         description="A list of specific medical products, drugs, or devices discussed during the interaction."

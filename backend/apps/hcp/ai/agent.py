@@ -1,6 +1,6 @@
 """
 LangGraph AI Agent for parsing natural language interactions.
-Uses Groq's llama-3.1-8b-instant via LangChain's ChatGroq.
+Uses Groq's llama-3.3-70b-versatile via LangChain's ChatGroq.
 """
 from typing import Annotated, TypedDict
 from django.conf import settings
@@ -47,7 +47,9 @@ def parse_interaction_node(state: AgentState) -> AgentState:
             "Guidelines:\n"
             "- Extract the HCP's name if mentioned (e.g., 'Dr. Smith').\n"
             "- Identify the interaction type (in_person, phone, email, virtual, event). Default to in_person.\n"
-            "- Extract any specific products/drugs discussed.\n"
+            "- Extract attendees: any person names mentioned as being present at the meeting (other than the HCP). Put them in the attendees list.\n"
+            "- Extract any specific products/drugs discussed in the products_discussed list.\n"
+            "- IMPORTANT: Do NOT put attendee names or product names into the notes field. Notes should only contain discussion topics, observations, and outcomes.\n"
             "- If the rep mentions a follow-up, set follow_up_required to true and extract the date if possible.\n"
             "- Provide a concise 1-2 sentence ai_summary of the interaction.\n"
             "- Determine the ai_sentiment (positive, neutral, negative).\n"
