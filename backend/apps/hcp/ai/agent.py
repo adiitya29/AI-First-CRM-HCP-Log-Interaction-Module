@@ -1,6 +1,6 @@
 """
 LangGraph AI Agent for parsing natural language interactions.
-Uses Groq's gemma2-9b-it via LangChain's ChatGroq.
+Uses Groq's llama-3.1-8b-instant via LangChain's ChatGroq.
 """
 from typing import Annotated, TypedDict
 from django.conf import settings

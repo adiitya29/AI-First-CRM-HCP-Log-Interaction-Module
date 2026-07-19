@@ -127,5 +127,5 @@ CORS_ALLOWED_ORIGINS = env.list(
 
 # ─── Groq / AI ────────────────────────────────────────────────────────────────
 GROQ_API_KEY = env("GROQ_API_KEY", default="")
-GROQ_MODEL = env("GROQ_MODEL", default="gemma2-9b-it")
+GROQ_MODEL = env("GROQ_MODEL", default="llama-3.1-8b-instant")
 GROQ_FALLBACK_MODEL = env("GROQ_FALLBACK_MODEL", default="llama-3.3-70b-versatile")
