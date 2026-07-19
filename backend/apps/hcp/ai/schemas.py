@@ -23,17 +23,36 @@ class InteractionExtraction(BaseModel):
     
     date: Optional[str] = Field(
         default=None,
-        description="The date of the interaction in YYYY-MM-DD format. If not explicitly mentioned, assume None (today's date will be used by the system)."
+        description="The date of the interaction in YYYY-MM-DD format. If not explicitly mentioned, assume None."
     )
     
-    notes: str = Field(
-        default="",
-        description="The raw notes or a polished version of what the representative entered."
+    time: Optional[str] = Field(
+        default=None,
+        description="The time of the interaction in HH:MM (24-hour) format. For example, '3pm' becomes '15:00', '10:30am' becomes '10:30'. Null if not mentioned."
     )
     
     attendees: List[str] = Field(
         default_factory=list,
         description="A list of attendee names (other than the HCP) present at the interaction, e.g., ['Mr. Aditya', 'Dr. Patel']. Extract if mentioned."
+    )
+    
+    notes: str = Field(
+        default="",
+        description=(
+            "ONLY the discussion topics and key observations from the meeting — "
+            "what was talked about, product efficacy, HCP concerns, clinical data discussed, etc. "
+            "Do NOT include attendee names, outcomes, or follow-up info here."
+        )
+    )
+    
+    outcomes: str = Field(
+        default="",
+        description=(
+            "The key outcomes, results, or agreements from the interaction — "
+            "what was agreed upon, next steps decided, commitments made. "
+            "For example: 'HCP agreed to prescribe OncoBoost for 5 patients' or 'Rep agreed to send Phase III data PDF'. "
+            "Leave empty if no specific outcomes were mentioned."
+        )
     )
     
     products_discussed: List[str] = Field(
@@ -58,5 +77,11 @@ class InteractionExtraction(BaseModel):
     
     ai_sentiment: str = Field(
         default="neutral",
-        description="The sentiment of the interaction. Must be one of: 'positive', 'neutral', 'negative'."
+        description=(
+            "The sentiment of the interaction from the HCP's perspective. "
+            "Must be EXACTLY one of these three strings: 'positive', 'neutral', or 'negative'. "
+            "Choose 'positive' if the HCP was receptive, enthusiastic, or agreed to next steps. "
+            "Choose 'negative' if the HCP was dismissive, skeptical, or raised concerns. "
+            "Default to 'neutral' if unclear."
+        )
     )
