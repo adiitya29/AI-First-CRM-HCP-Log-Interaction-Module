@@ -31,7 +31,7 @@ const AiAssistantChat = () => {
           {/* Default Instruction Bubble */}
           <div className="glass-panel" style={{ padding: '1rem', borderRadius: 'var(--radius-lg) var(--radius-lg) var(--radius-lg) 0', alignSelf: 'flex-start', maxWidth: '90%' }}>
             <p className="text-sm">
-              Log interaction details here (e.g., "Met Dr. Smith, discussed Product X efficacy, positive sentiment, shared brochure") or ask for help.
+              Describe the interaction below...
             </p>
           </div>
           
