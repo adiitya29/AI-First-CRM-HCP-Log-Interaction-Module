@@ -12,38 +12,56 @@ const InteractionForm = () => {
     interaction_type: "in_person",
     date: "",
     time: "",
-    attendees: "",   // comma-separated string
+    attendees: "",          // comma-separated string
     notes: "",
-    ai_sentiment: "neutral",
     outcomes: "",
+    ai_sentiment: "neutral",
     follow_up_required: false,
-    follow_up_date: ""
+    follow_up_date: "",
+    samples_distributed: [], // list of sample names
   });
 
   useEffect(() => {
     dispatch(fetchHcps());
   }, [dispatch]);
 
-  // Sync AI parsed data into the form state when it arrives
+  /**
+   * SELECTIVE MERGE: Only update a field if the AI explicitly extracted a
+   * non-null / non-empty value for it in the current message.
+   * This ensures that a prompt like "add samples" won't reset Date or Sentiment.
+   */
   useEffect(() => {
-    if (parsedAiData) {
-      setFormData((prev) => ({
-        ...prev,
-        hcp_name: parsedAiData.hcp_name || prev.hcp_name,
-        interaction_type: parsedAiData.interaction_type || prev.interaction_type,
-        date: parsedAiData.date || prev.date,
-        time: parsedAiData.time || prev.time,
-        notes: parsedAiData.notes || prev.notes,
-        outcomes: parsedAiData.outcomes || prev.outcomes,
-        ai_sentiment: parsedAiData.ai_sentiment || prev.ai_sentiment,
-        follow_up_required: parsedAiData.follow_up_required || prev.follow_up_required,
-        follow_up_date: parsedAiData.follow_up_date || prev.follow_up_date,
-        // Convert attendees array → comma-separated string
-        attendees: parsedAiData.attendees?.length
-          ? parsedAiData.attendees.join(", ")
-          : prev.attendees,
-      }));
-    }
+    if (!parsedAiData) return;
+
+    setFormData((prev) => {
+      const next = { ...prev };
+
+      if (parsedAiData.hcp_name != null)         next.hcp_name         = parsedAiData.hcp_name;
+      if (parsedAiData.interaction_type != null)  next.interaction_type = parsedAiData.interaction_type;
+      if (parsedAiData.date != null)              next.date             = parsedAiData.date;
+      if (parsedAiData.time != null)              next.time             = parsedAiData.time;
+      if (parsedAiData.notes != null && parsedAiData.notes !== "")     next.notes    = parsedAiData.notes;
+      if (parsedAiData.outcomes != null && parsedAiData.outcomes !== "") next.outcomes = parsedAiData.outcomes;
+      if (parsedAiData.ai_sentiment != null)      next.ai_sentiment     = parsedAiData.ai_sentiment;
+      if (parsedAiData.follow_up_required != null) next.follow_up_required = parsedAiData.follow_up_required;
+      if (parsedAiData.follow_up_date != null)    next.follow_up_date   = parsedAiData.follow_up_date;
+
+      // Merge attendees array → comma-separated string
+      if (parsedAiData.attendees != null && parsedAiData.attendees.length > 0) {
+        next.attendees = parsedAiData.attendees.join(", ");
+      }
+
+      // Merge samples_distributed — append new samples to existing list
+      if (parsedAiData.samples_distributed != null && parsedAiData.samples_distributed.length > 0) {
+        const existing = prev.samples_distributed || [];
+        const incoming = parsedAiData.samples_distributed;
+        // Deduplicate
+        const merged = [...new Set([...existing, ...incoming])];
+        next.samples_distributed = merged;
+      }
+
+      return next;
+    });
   }, [parsedAiData]);
 
   const handleChange = (field, value) => {
@@ -155,7 +173,15 @@ const InteractionForm = () => {
               <span className="text-sm font-medium">Samples Distributed</span>
               <Button variant="outline" className="text-xs">📦 Add Sample</Button>
             </div>
-            <p className="text-xs text-muted italic">No samples added.</p>
+            {formData.samples_distributed.length === 0 ? (
+              <p className="text-xs text-muted italic">No samples added.</p>
+            ) : (
+              <ul className="text-xs mt-1" style={{ paddingLeft: '1rem' }}>
+                {formData.samples_distributed.map((s, i) => (
+                  <li key={i} className="text-primary mb-1">📦 {s}</li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 
