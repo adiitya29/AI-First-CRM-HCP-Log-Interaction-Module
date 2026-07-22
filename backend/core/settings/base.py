@@ -17,7 +17,11 @@ environ.Env.read_env(BASE_DIR / ".env")
 # ─── Core ─────────────────────────────────────────────────────────────────────
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
-ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*", "localhost", "127.0.0.1"])
+
+RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="")
+if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # ─── Application Definition ───────────────────────────────────────────────────
 DJANGO_APPS = [

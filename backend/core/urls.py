@@ -2,10 +2,10 @@
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = [
-    # Admin
-    path("admin/", admin.site.urls),
+from django.http import JsonResponse
 
-    # API v1 – HCP module (wired up in the next milestone)
+urlpatterns = [
+    path("", lambda request: JsonResponse({"status": "healthy", "message": "AI-First CRM HCP API is running"})),
+    path("admin/", admin.site.urls),
     path("api/v1/hcp/", include("apps.hcp.urls")),
 ]
