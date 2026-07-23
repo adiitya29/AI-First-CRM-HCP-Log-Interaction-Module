@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_BASE = "http://localhost:8000/api/v1/hcp";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1/hcp";
 
 export const fetchHcps = createAsyncThunk("hcp/fetchHcps", async (_, { rejectWithValue }) => {
   try {

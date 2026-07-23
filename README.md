@@ -212,6 +212,25 @@ pytest apps/hcp/tests/test_module4_ai.py  # Run only AI tests
 
 ---
 
+## 🚀 Deployment
+
+### Backend (Render)
+The backend is configured for deployment on [Render](https://render.com/).
+1. A `render.yaml` blueprint is provided.
+2. A `build.sh` script installs requirements and runs migrations.
+3. Ensure you set the `DATABASE_URL` (using IPv4/pgBouncer pool if on Supabase), `SECRET_KEY`, and `GROQ_API_KEY` in the Render dashboard.
+
+### Frontend (Vercel)
+The frontend is optimized for deployment on [Vercel](https://vercel.com/).
+1. Connect your GitHub repository to Vercel.
+2. Select the `frontend` directory as the Root Directory.
+3. Vercel will automatically detect Vite. The build command is `npm run build` and the output directory is `dist`.
+4. In the Vercel Environment Variables settings, add:
+   - `VITE_API_URL`: The deployed Render backend URL (e.g., `https://your-backend-app.onrender.com/api/v1/hcp`)
+5. A `vercel.json` file is included to ensure client-side routing works correctly for the SPA.
+
+---
+
 ## 📜 License
 
 MIT
